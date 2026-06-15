@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -195,17 +195,12 @@ body{
 
 <script>
 function entrar(){
-  var email = document.querySelector('input[type=email]').value;
-  var senha = document.querySelector('input[type=password]').value;
-  if(!email || !senha){
-    alert('Preencha e-mail e senha para continuar.');
-    return;
-  }
-  // Por hora redireciona para a loja (piloto)
   window.location.href = '/loja';
 }
 
-// Enter no campo senha
+document.querySelector('input[type=email]').addEventListener('keydown',function(e){
+  if(e.key==='Enter') entrar();
+});
 document.querySelector('input[type=password]').addEventListener('keydown',function(e){
   if(e.key==='Enter') entrar();
 });
