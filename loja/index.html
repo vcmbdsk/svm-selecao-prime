@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja · SVM Seleção Prime — Cortes Avulsos e Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SVM · Design System
+   ============================================================ */
+:root{
+  --ink:#0B0806;--ink-2:#15100B;--ink-3:#211A12;--ink-soft:#2C2419;
+  --gold:#D9BD84;--gold-mid:#B8874E;--gold-deep:#8A6230;--gold-bright:#E7CF9B;
+  --cream:#F4EFE6;--cream-2:#ECE4D6;--cream-3:#DCD0BB;--white:#FCFBF8;
+  --on-dark:#FBF7EF;--on-dark-mut:rgba(251,247,239,.56);--on-dark-faint:rgba(251,247,239,.34);
+  --on-light:#1B1610;--on-light-mut:rgba(27,22,16,.62);--on-light-faint:rgba(27,22,16,.40);
+  --hair-dark:rgba(217,189,132,.16);--hair-light:rgba(138,98,48,.18);
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Montserrat',system-ui,sans-serif;
+  --container:1200px;--gutter:clamp(20px,5vw,56px);--ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--ink);color:var(--on-dark);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold-deep);color:var(--white)}
+.wrap{max-width:var(--container);margin:0 auto;padding-inline:var(--gutter)}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:17px 38px;border-radius:2px;cursor:pointer;border:1px solid transparent;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s,color .35s}
+.btn-gold{background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 42%,var(--gold));color:var(--ink)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 40px -10px rgba(217,189,132,.45)}
+.btn-ghost{border-color:var(--hair-dark);color:var(--on-dark-mut)}
+.btn-ghost:hover{border-color:var(--gold-mid);color:var(--gold)}
+.btn-dark{background:var(--ink);color:var(--gold)}
+.btn-dark:hover{transform:translateY(-2px);background:var(--ink-2)}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:fixed;inset:0 0 auto 0;z-index:200;height:78px;display:flex;align-items:center;justify-content:space-between;padding-inline:var(--gutter);transition:background .4s var(--ease),height .4s var(--ease),border-color .4s;border-bottom:1px solid transparent}
+.nav.scrolled{height:64px;background:rgba(11,8,6,.86);border-bottom-color:var(--hair-dark);backdrop-filter:blur(18px) saturate(1.2)}
+.brand{display:flex;align-items:center;gap:13px}
+.brand .mark{width:42px;height:42px;border:1px solid var(--gold-mid);border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:.04em;color:var(--gold);flex-shrink:0}
+.brand .word{display:flex;flex-direction:column;line-height:1}
+.brand .word b{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.16em;color:var(--on-dark)}
+.brand .word span{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-mid);margin-top:3px}
+.nav-links{display:flex;gap:34px}
+.nav-links a{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-mut);transition:color .25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a.active{color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:18px}
+.nav-cart-btn{background:none;border:1px solid var(--hair-dark);color:var(--on-dark-mut);width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;position:relative;transition:border-color .25s,color .25s;flex-shrink:0}
+.nav-cart-btn:hover{border-color:var(--gold-mid);color:var(--gold)}
+.nav-cart-btn .nbadge{position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;place-items:center;line-height:1}
+.nav-cart-btn .nbadge.show{display:grid}
+.hamburger{background:none;border:none;color:var(--on-dark-mut);cursor:pointer;padding:4px;display:none;align-items:center}
+@media(max-width:920px){.nav-links{display:none}.hamburger{display:flex}}
+
+/* ============================================================
+   MOBILE DRAWER
+   ============================================================ */
+.mobile-nav{position:fixed;inset:0;z-index:300;display:flex;pointer-events:none;opacity:0;transition:opacity .3s}
+.mobile-nav.open{opacity:1;pointer-events:all}
+.mobile-backdrop{position:absolute;inset:0;background:rgba(11,8,6,.7)}
+.mobile-panel{position:absolute;right:0;top:0;bottom:0;width:min(320px,90vw);background:var(--ink-2);border-left:1px solid var(--hair-dark);padding:88px 32px 40px;display:flex;flex-direction:column;gap:0;transform:translateX(100%);transition:transform .35s var(--ease)}
+.mobile-nav.open .mobile-panel{transform:translateX(0)}
+.mobile-panel a{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut);padding:18px 0;border-bottom:1px solid var(--hair-dark);transition:color .2s;display:block}
+.mobile-panel a:last-child{border-bottom:none}
+.mobile-panel a:hover,.mobile-panel a.active{color:var(--gold)}
+.mobile-close{position:absolute;top:26px;right:26px;background:none;border:none;color:var(--on-dark-mut);cursor:pointer;display:flex;align-items:center;justify-content:center;width:32px;height:32px}
+
+/* ============================================================
+   HERO LOJA
+   ============================================================ */
+.hero-loja{background:linear-gradient(180deg,var(--ink-3) 0%,var(--ink) 100%);border-bottom:1px solid var(--hair-dark);padding:clamp(110px,13vw,150px) 0 clamp(44px,5vw,60px);position:relative;overflow:hidden}
+.hero-loja::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--hair-dark) 1px,transparent 1px),linear-gradient(90deg,var(--hair-dark) 1px,transparent 1px);background-size:96px 96px;opacity:.4;mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,#000,transparent 75%)}
+.hero-loja .wrap{position:relative;z-index:2}
+.breadcrumb{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-faint);margin-bottom:22px}
+.breadcrumb a{color:var(--on-dark-faint);transition:color .2s}
+.breadcrumb a:hover{color:var(--gold-mid)}
+.breadcrumb .sep{color:var(--hair-dark);font-size:14px}
+.breadcrumb .current{color:var(--gold-mid)}
+.hero-loja h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,5.5vw,70px);line-height:.98;letter-spacing:-.015em;color:var(--on-dark)}
+.hero-loja h1 em{font-style:italic;font-weight:500;color:var(--gold)}
+.hero-loja p{font-size:clamp(13px,1.4vw,15px);color:var(--on-dark-mut);margin-top:16px;font-weight:300;max-width:44ch}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar{background:var(--ink);border-bottom:1px solid var(--hair-dark);position:sticky;top:78px;z-index:100;transition:top .4s var(--ease)}
+.filter-inner{display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.filter-inner::-webkit-scrollbar{display:none}
+.filter-btn{background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--on-dark-faint);padding:18px 24px;white-space:nowrap;transition:color .25s,border-color .25s;flex-shrink:0}
+.filter-btn:hover{color:var(--on-dark-mut)}
+.filter-btn.active{color:var(--gold);border-bottom-color:var(--gold-mid)}
+
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
+.shop-section{padding-block:clamp(44px,6vw,80px)}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.product-card{background:var(--white);border:1px solid var(--cream-3);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.product-card:hover{transform:translateY(-5px);box-shadow:0 22px 52px -28px rgba(27,22,16,.45)}
+.product-card.hidden{display:none}
+.ph{position:relative;overflow:hidden}
+.ph img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.product-card:hover .ph img{transform:scale(1.05)}
+.badge{position:absolute;top:12px;left:12px;z-index:3;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:2px}
+.badge.prime{background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid));color:var(--white)}
+.badge.wagyu{background:var(--ink);color:var(--gold);border:1px solid rgba(217,189,132,.3)}
+.badge.kit{background:var(--cream-3);color:var(--on-light)}
+.p-info{padding:16px 18px 18px}
+.p-nm{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--on-light);line-height:1.05}
+.p-wt{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-light-faint);margin-top:5px}
+.p-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--cream-2)}
+.p-pr{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--on-light)}
+.p-pr small{font-size:10px;font-family:var(--sans);color:var(--on-light-faint);letter-spacing:.06em}
+.add-btn{width:36px;height:36px;border:1px solid var(--hair-light);border-radius:50%;background:none;display:grid;place-items:center;color:var(--gold-deep);cursor:pointer;font-size:20px;line-height:1;transition:background .25s,color .25s,border-color .25s;flex-shrink:0}
+.add-btn:hover{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+
+/* EMPTY STATE */
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;border:1px solid var(--hair-dark)}
+.empty-state .es-icon{font-family:var(--serif);font-size:48px;color:var(--gold-deep);opacity:.3;margin-bottom:16px}
+.empty-state p{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-dark-faint)}
+
+/* ============================================================
+   CART OVERLAY + DRAWER
+   ============================================================ */
+.cart-overlay{position:fixed;inset:0;z-index:400;background:rgba(11,8,6,.65);opacity:0;pointer-events:none;transition:opacity .35s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{position:fixed;right:0;top:0;bottom:0;width:min(440px,100vw);background:var(--ink-2);border-left:1px solid var(--hair-dark);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s var(--ease)}
+.cart-drawer.open{transform:translateX(0)}
+.cart-head{display:flex;justify-content:space-between;align-items:center;padding:26px 28px;border-bottom:1px solid var(--hair-dark);flex-shrink:0}
+.cart-head h2{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--on-dark)}
+.cart-head .cart-count{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-faint);margin-top:2px}
+.cart-close{background:none;border:none;color:var(--on-dark-mut);cursor:pointer;display:grid;place-items:center;width:32px;height:32px;transition:color .2s;flex-shrink:0}
+.cart-close:hover{color:var(--gold)}
+.cart-body{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px}
+.cart-empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;height:100%;text-align:center;color:var(--on-dark-faint)}
+.cart-empty-state svg{opacity:.25}
+.cart-empty-state p{font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.cart-item{display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:start;padding-bottom:20px;border-bottom:1px solid var(--hair-dark)}
+.cart-item:last-child{border-bottom:none;padding-bottom:0}
+.ci-img{width:76px;height:76px;object-fit:cover;display:block;border:1px solid var(--hair-dark)}
+.ci-body{display:flex;flex-direction:column;gap:4px}
+.ci-nm{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--on-dark);line-height:1.05}
+.ci-wt{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-dark-faint)}
+.ci-pr{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--gold);margin-top:4px}
+.ci-actions{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.ci-qty{display:flex;align-items:center;gap:10px}
+.qty-btn{background:none;border:1px solid var(--hair-dark);color:var(--on-dark-mut);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:border-color .2s,color .2s;line-height:1}
+.qty-btn:hover{border-color:var(--gold);color:var(--gold)}
+.ci-qty-n{font-family:var(--serif);font-size:16px;color:var(--on-dark);min-width:18px;text-align:center}
+.rm-btn{background:none;border:none;color:var(--on-dark-faint);cursor:pointer;font-size:9px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;font-family:var(--sans)}
+.rm-btn:hover{color:var(--gold)}
+.cart-foot{padding:24px 28px;border-top:1px solid var(--hair-dark);flex-shrink:0}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.st-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--on-dark-mut)}
+.st-val{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--on-dark)}
+.cart-cta{width:100%;padding:18px;background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 42%,var(--gold));color:var(--ink);border:none;border-radius:2px;cursor:pointer;font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:transform .3s var(--ease),box-shadow .3s;display:flex;align-items:center;justify-content:center;gap:10px}
+.cart-cta:hover{transform:translateY(-2px);box-shadow:0 12px 36px -10px rgba(184,135,78,.5)}
+.checkout-note{margin-top:12px;text-align:center;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-dark-faint)}
+
+/* ============================================================
+   FLOATING CART BUTTON
+   ============================================================ */
+.fab{position:fixed;bottom:32px;right:32px;z-index:300;background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 42%,var(--gold));border:none;border-radius:50%;width:60px;height:60px;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 28px -8px rgba(184,135,78,.65);transition:transform .3s var(--ease),box-shadow .3s;flex-shrink:0}
+.fab:hover{transform:scale(1.08);box-shadow:0 14px 40px -8px rgba(184,135,78,.7)}
+.fab-inner{position:relative;display:grid;place-items:center}
+.fab-badge{position:absolute;top:-12px;right:-12px;background:var(--ink);color:var(--gold);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:none;place-items:center;border:1px solid var(--gold-mid);font-family:var(--sans);line-height:1}
+.fab-badge.show{display:grid}
+
+/* ============================================================
+   CHECKOUT MODAL
+   ============================================================ */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(11,8,6,.82);display:none;place-items:center;padding:20px}
+.modal-overlay.show{display:grid}
+.modal-box{background:var(--ink-2);border:1px solid var(--hair-dark);padding:clamp(36px,5vw,56px);max-width:460px;width:100%;text-align:center}
+.modal-seal{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 45%,var(--gold));display:grid;place-items:center;margin:0 auto 24px;position:relative;box-shadow:0 16px 40px -18px rgba(184,135,78,.6)}
+.modal-seal::after{content:"";position:absolute;inset:7px;border:1px solid rgba(11,8,6,.2);border-radius:50%}
+.modal-seal svg{color:var(--ink)}
+.modal-box h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:600;color:var(--gold);margin-bottom:14px}
+.modal-box p{font-size:13.5px;line-height:1.85;color:var(--on-dark-mut)}
+.modal-box p b{color:var(--on-dark);font-weight:500}
+.modal-actions{margin-top:30px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.modal-btn{background:none;border:1px solid var(--hair-dark);color:var(--on-dark-mut);padding:13px 30px;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s}
+.modal-btn:hover{border-color:var(--gold-mid);color:var(--gold)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:var(--ink);border-top:1px solid var(--hair-dark);padding-block:54px 38px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;padding-bottom:40px;border-bottom:1px solid var(--hair-dark)}
+.foot-brand p{font-size:12.5px;line-height:1.7;color:var(--on-dark-faint);font-weight:300;max-width:30ch;margin-top:18px}
+.foot-col h5{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:var(--on-dark-mut);margin-bottom:11px;transition:color .25s}
+.foot-col a:hover{color:var(--gold)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;gap:18px;padding-top:26px;flex-wrap:wrap}
+.foot-bot .cp{font-size:10.5px;letter-spacing:.08em;color:var(--on-dark-faint)}
+.foot-bot .cp b{color:var(--on-dark-mut);font-weight:500}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1080px){.product-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){
+  .product-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .foot-top{grid-template-columns:1fr 1fr;gap:24px}
+  .fab{bottom:20px;right:20px;width:52px;height:52px}
+  .cart-drawer{width:100vw}
+}
+@media(max-width:480px){
+  .foot-top{grid-template-columns:1fr}
+  .product-grid{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <a class="brand" href="/" aria-label="SVM Seleção Prime">
+    <div class="mark">S</div>
+    <div class="word"><b>SVM</b><span>Seleção Prime</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/loja/" class="active">Loja</a>
+    <a href="/#clube">Clube</a>
+    <a href="/#planos">Planos</a>
+    <a href="/#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-cart-btn" onclick="openCart()" aria-label="Abrir sacola">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6h15l-1.5 9h-12L6 6Z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+      <span class="nbadge" id="nav-badge"></span>
+    </button>
+    <button class="hamburger" onclick="openMobile()" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MOBILE NAV
+     ============================================================ -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-backdrop" onclick="closeMobile()"></div>
+  <div class="mobile-panel">
+    <button class="mobile-close" onclick="closeMobile()" aria-label="Fechar menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/loja/" class="active" onclick="closeMobile()">Loja</a>
+    <a href="/#clube" onclick="closeMobile()">Clube</a>
+    <a href="/#planos" onclick="closeMobile()">Planos</a>
+    <a href="/#faq" onclick="closeMobile()">FAQ</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero-loja">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Navegação estrutural">
+      <a href="/">Home</a>
+      <span class="sep">›</span>
+      <span class="current">Loja</span>
+    </nav>
+    <h1>A vitrine <em>SVM</em></h1>
+    <p>Cortes avulsos e kits — origem rastreada, maturação certificada, entrega refrigerada.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FILTER BAR
+     ============================================================ -->
+<div class="filter-bar" id="filter-bar">
+  <div class="wrap">
+    <div class="filter-inner">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">Todos</button>
+      <button class="filter-btn" data-filter="angus" onclick="setFilter('angus',this)">Angus</button>
+      <button class="filter-btn" data-filter="wagyu" onclick="setFilter('wagyu',this)">Wagyu</button>
+      <button class="filter-btn" data-filter="cordeiro" onclick="setFilter('cordeiro',this)">Cordeiro</button>
+      <button class="filter-btn" data-filter="kit" onclick="setFilter('kit',this)">Kits</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PRODUCT GRID
+     ============================================================ -->
+<section class="shop-section">
+  <div class="wrap">
+    <div class="product-grid" id="product-grid">
+
+      <!-- 1 · Bife Ancho -->
+      <article class="product-card" data-cat="angus" data-id="1">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c1.jpg" alt="Bife Ancho Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Bife Ancho</div>
+          <div class="p-wt">Angus · 400g · maturado</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 79<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(1)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2 · Bife Chorizo -->
+      <article class="product-card" data-cat="angus" data-id="2">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c2.jpg" alt="Bife Chorizo Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Bife Chorizo</div>
+          <div class="p-wt">Angus · 400g · maturado</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 74<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(2)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 · Tomahawk -->
+      <article class="product-card" data-cat="angus" data-id="3">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c3.jpg" alt="Tomahawk Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Tomahawk</div>
+          <div class="p-wt">Angus · 1,2kg · maturado</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 189<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(3)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4 · Picanha -->
+      <article class="product-card" data-cat="angus" data-id="4">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c4.jpg" alt="Picanha Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Picanha</div>
+          <div class="p-wt">Angus · 1,1kg</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 159<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(4)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5 · Denver Wagyu -->
+      <article class="product-card" data-cat="wagyu" data-id="5">
+        <div class="ph">
+          <span class="badge wagyu">Wagyu</span>
+          <img src="/img/c5.jpg" alt="Denver Wagyu" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Denver Wagyu</div>
+          <div class="p-wt">Wagyu · 350g</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 134<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(5)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6 · Fraldinha -->
+      <article class="product-card" data-cat="angus" data-id="6">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c6.jpg" alt="Fraldinha Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Fraldinha</div>
+          <div class="p-wt">Angus · 900g</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 89<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(6)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7 · Assado de Tira -->
+      <article class="product-card" data-cat="angus" data-id="7">
+        <div class="ph">
+          <span class="badge prime">Prime</span>
+          <img src="/img/c7.jpg" alt="Assado de Tira Angus" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Assado de Tira</div>
+          <div class="p-wt">Angus · 800g</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 69<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(7)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8 · T-Bone Wagyu -->
+      <article class="product-card" data-cat="wagyu" data-id="8">
+        <div class="ph">
+          <span class="badge wagyu">Wagyu</span>
+          <img src="/img/c8.jpg" alt="T-Bone Wagyu" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">T-Bone Wagyu</div>
+          <div class="p-wt">Wagyu · 700g</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 174<small>/un</small></div>
+            <button class="add-btn" onclick="addToCart(8)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 9 · Kit Churrasco -->
+      <article class="product-card" data-cat="kit" data-id="9">
+        <div class="ph">
+          <span class="badge kit">Kit</span>
+          <img src="https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" alt="Kit Churrasco SVM" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Kit Churrasco</div>
+          <div class="p-wt">4 cortes · serve 4 pessoas</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 490<small>/kit</small></div>
+            <button class="add-btn" onclick="addToCart(9)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10 · Kit Presente -->
+      <article class="product-card" data-cat="kit" data-id="10">
+        <div class="ph">
+          <span class="badge kit">Kit</span>
+          <img src="https://images.pexels.com/photos/5718071/pexels-photo-5718071.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" alt="Kit Presente SVM" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Kit Presente</div>
+          <div class="p-wt">Curadoria · embalagem premium</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 390<small>/kit</small></div>
+            <button class="add-btn" onclick="addToCart(10)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 11 · Kit Wagyu -->
+      <article class="product-card" data-cat="wagyu kit" data-id="11">
+        <div class="ph">
+          <span class="badge wagyu">Wagyu</span>
+          <img src="https://images.pexels.com/photos/3186654/pexels-photo-3186654.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" alt="Kit Wagyu SVM" loading="lazy">
+        </div>
+        <div class="p-info">
+          <div class="p-nm">Kit Wagyu</div>
+          <div class="p-wt">3 cortes Wagyu · reserva</div>
+          <div class="p-row">
+            <div class="p-pr">R$ 690<small>/kit</small></div>
+            <button class="add-btn" onclick="addToCart(11)" aria-label="Adicionar ao carrinho">+</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="es-icon">✦</div>
+        <p>Em breve — novos cortes chegando</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CART OVERLAY + DRAWER
+     ============================================================ -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+<aside class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Sacola de compras">
+  <div class="cart-head">
+    <div>
+      <h2>Sacola</h2>
+      <div class="cart-count" id="cart-count"></div>
+    </div>
+    <button class="cart-close" onclick="closeCart()" aria-label="Fechar sacola">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-subtotal">
+      <span class="st-label">Subtotal</span>
+      <span class="st-val" id="cart-total">R$ 0</span>
+    </div>
+    <button class="cart-cta" onclick="checkout()">
+      Finalizar pedido
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <p class="checkout-note">Nosso time entrará em contato pelo WhatsApp</p>
+  </div>
+</aside>
+
+<!-- ============================================================
+     FLOATING CART BUTTON
+     ============================================================ -->
+<button class="fab" onclick="openCart()" id="fab" aria-label="Abrir sacola">
+  <div class="fab-inner">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><path d="M6 6h15l-1.5 9h-12L6 6Z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+    <span class="fab-badge" id="fab-badge"></span>
+  </div>
+</button>
+
+<!-- ============================================================
+     CHECKOUT MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box">
+    <div class="modal-seal">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h3>Pedido recebido!</h3>
+    <p>Obrigado pela confiança. <b>Nossa equipe entrará em contato pelo WhatsApp</b> para confirmar os detalhes e agendar sua entrega refrigerada.</p>
+    <div class="modal-actions">
+      <button class="modal-btn" onclick="closeModal()">Continuar comprando</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="/" aria-label="SVM Seleção Prime" style="display:inline-flex">
+          <div class="mark">S</div>
+          <div class="word"><b>SVM</b><span>Seleção Prime</span></div>
+        </a>
+        <p>Clube e açougue de cortes nobres. Curadoria, maturação e entrega refrigerada — desde 1984.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Loja</h5>
+        <a href="/loja/">Todos os cortes</a>
+        <a href="/loja/" onclick="event.preventDefault();setFilter('angus',document.querySelector('[data-filter=angus]'))">Cortes Angus</a>
+        <a href="/loja/" onclick="event.preventDefault();setFilter('wagyu',document.querySelector('[data-filter=wagyu]'))">Edições Wagyu</a>
+        <a href="/loja/" onclick="event.preventDefault();setFilter('kit',document.querySelector('[data-filter=kit]'))">Kits churrasco</a>
+      </div>
+      <div class="foot-col">
+        <h5>O Clube</h5>
+        <a href="/#clube">Como funciona</a>
+        <a href="/#planos">Nobre · Prime · Supremo</a>
+        <a href="/#garantia">Garantia</a>
+        <a href="/#faq">Dúvidas</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contato</h5>
+        <a href="#">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="#">contato@svm.com.br</a>
+        <a href="#">Central de ajuda</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span class="cp">© 1984–2026 <b>SVM Seleção Prime</b> · Todos os direitos reservados.</span>
+      <span class="cp">CNPJ 00.000.000/0001-00 · Produto perecível · Consuma com responsabilidade.</span>
+      <span class="cp" style="font-size:9px;color:rgba(251,247,239,.1);letter-spacing:1px">Desenvolvido por <span style="color:rgba(217,189,132,.2)">Vyvio</span></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ---- Product catalog ---- */
+const PRODUCTS = {
+  1:{name:'Bife Ancho',     wt:'Angus · 400g',              price:79,  img:'/img/c1.jpg'},
+  2:{name:'Bife Chorizo',   wt:'Angus · 400g',              price:74,  img:'/img/c2.jpg'},
+  3:{name:'Tomahawk',       wt:'Angus · 1,2kg',             price:189, img:'/img/c3.jpg'},
+  4:{name:'Picanha',        wt:'Angus · 1,1kg',             price:159, img:'/img/c4.jpg'},
+  5:{name:'Denver Wagyu',   wt:'Wagyu · 350g',              price:134, img:'/img/c5.jpg'},
+  6:{name:'Fraldinha',      wt:'Angus · 900g',              price:89,  img:'/img/c6.jpg'},
+  7:{name:'Assado de Tira', wt:'Angus · 800g',              price:69,  img:'/img/c7.jpg'},
+  8:{name:'T-Bone Wagyu',   wt:'Wagyu · 700g',              price:174, img:'/img/c8.jpg'},
+  9:{name:'Kit Churrasco',  wt:'4 cortes · serve 4',        price:490, img:'https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'},
+  10:{name:'Kit Presente',  wt:'Curadoria · emb. premium',  price:390, img:'https://images.pexels.com/photos/5718071/pexels-photo-5718071.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'},
+  11:{name:'Kit Wagyu',     wt:'3 cortes Wagyu · reserva',  price:690, img:'https://images.pexels.com/photos/3186654/pexels-photo-3186654.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'}
+};
+
+/* ---- Cart state ---- */
+let cart = {};
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  renderCart();
+  openCart();
+}
+
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  renderCart();
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  renderCart();
+}
+
+function renderCart() {
+  const ids = Object.keys(cart);
+  const totalQty = ids.reduce((s, id) => s + cart[id], 0);
+  const subtotal = ids.reduce((s, id) => s + PRODUCTS[id].price * cart[id], 0);
+
+  /* badges */
+  const navBadge = document.getElementById('nav-badge');
+  const fabBadge = document.getElementById('fab-badge');
+  if (totalQty > 0) {
+    navBadge.textContent = totalQty;
+    navBadge.classList.add('show');
+    fabBadge.textContent = totalQty;
+    fabBadge.classList.add('show');
+  } else {
+    navBadge.classList.remove('show');
+    fabBadge.classList.remove('show');
+  }
+
+  /* count label */
+  const countEl = document.getElementById('cart-count');
+  countEl.textContent = totalQty > 0 ? totalQty + (totalQty === 1 ? ' item' : ' itens') : '';
+
+  /* body */
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-foot');
+
+  if (ids.length === 0) {
+    body.innerHTML = `<div class="cart-empty-state">
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6h15l-1.5 9h-12L6 6Z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+      <p>Sua sacola está vazia</p>
+    </div>`;
+    foot.style.display = 'none';
+    return;
+  }
+
+  body.innerHTML = ids.map(id => {
+    const p = PRODUCTS[id];
+    const q = cart[id];
+    return `<div class="cart-item">
+      <img class="ci-img" src="${p.img}" alt="${p.name}">
+      <div class="ci-body">
+        <div class="ci-nm">${p.name}</div>
+        <div class="ci-wt">${p.wt}</div>
+        <div class="ci-pr">R$ ${(p.price * q).toLocaleString('pt-BR')}</div>
+        <div class="ci-actions">
+          <div class="ci-qty">
+            <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+            <span class="ci-qty-n">${q}</span>
+            <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+          </div>
+          <button class="rm-btn" onclick="removeFromCart(${id})">remover</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('cart-total').textContent = 'R ' + subtotal.toLocaleString('pt-BR');
+  foot.style.display = 'block';
+}
+
+/* ---- Cart drawer ---- */
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ---- Checkout ---- */
+function checkout() {
+  closeCart();
+  cart = {};
+  renderCart();
+  document.getElementById('checkout-modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('checkout-modal').classList.remove('show');
+}
+
+/* ---- Filter ---- */
+function setFilter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.product-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const cats = (card.dataset.cat || '').split(' ');
+    const match = cat === 'all' || cats.includes(cat);
+    card.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  const emptyEl = document.getElementById('empty-state');
+  emptyEl.style.display = visible === 0 ? 'block' : 'none';
+}
+
+/* ---- Nav scroll ---- */
+const navEl = document.getElementById('nav');
+const filterBarEl = document.getElementById('filter-bar');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY > 30;
+  navEl.classList.toggle('scrolled', scrolled);
+  filterBarEl.style.top = navEl.offsetHeight + 'px';
+}, {passive: true});
+
+/* ---- Mobile nav ---- */
+function openMobile() {
+  document.getElementById('mobile-nav').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobile() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ---- Init ---- */
+renderCart();
+filterBarEl.style.top = navEl.offsetHeight + 'px';
+</script>
+</body>
+</html>
