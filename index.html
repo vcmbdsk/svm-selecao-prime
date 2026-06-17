@@ -734,7 +734,7 @@ image-slot::after { content:attr(placeholder);position:absolute;inset:0;display:
     <a href="#marca">A Marca</a>
     <a href="#cortes">Cortes</a>
     <a href="#kits">Kits</a><a href="#clube">O Clube</a>
-    <a href="#planos">Prime · Supremo</a>
+    <a href="#planos">Nobre · Prime · Supremo</a>
     <a href="#faq">Dúvidas</a>
   </div>
   <div class="nav-right">
@@ -1036,77 +1036,81 @@ image-slot::after { content:attr(placeholder);position:absolute;inset:0;display:
       <div class="rule center"></div>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px;max-width:860px;margin-left:auto;margin-right:auto">
+    <div class="plans" style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px;max-width:900px;margin-left:auto;margin-right:auto;align-items:start" data-reveal="">
 
       <!-- PRIME -->
-      <div class="plan" data-reveal="">
-        <div class="plan-head" style="padding:36px 32px 24px">
-          <div class="pn">Prime</div>
-          <div class="plan-period-selector" id="sel-prime">
+      <div class="plan" style="background:var(--white);border:1px solid var(--cream-2);border-radius:4px;overflow:hidden">
+        <div style="padding:36px 32px 20px">
+          <div class="pn" style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:20px;font-weight:600">Prime</div>
+          <div class="plan-period-selector" id="sel-prime" style="display:flex;gap:6px;margin-bottom:20px">
             <button class="period-btn active" onclick="setPeriod('prime',3,this)">3 meses</button>
             <button class="period-btn" onclick="setPeriod('prime',6,this)">6 meses</button>
             <button class="period-btn" onclick="setPeriod('prime',12,this)">12 meses</button>
           </div>
-          <div class="price"><sup>R$</sup><span id="prime-price">934</span><span id="prime-cents">,80</span><sub> / mês</sub></div>
-          <div id="prime-discount" class="plan-discount">5% de desconto aplicado</div>
-          <p class="pd" style="margin-top:12px">Curadoria mensal SVM — cortes premium com origem rastreada entregues na sua porta.</p>
+          <div class="price" style="font-family:var(--serif);line-height:1">
+            <sup style="font-size:20px;vertical-align:super;color:var(--gold-mid)">R$</sup><span id="prime-price" style="font-size:54px;font-weight:600;color:var(--on-light)">934</span><span id="prime-cents" style="font-size:22px;color:var(--on-light)">,80</span><sub style="font-size:13px;color:var(--on-light-mut);font-family:var(--sans);font-weight:300"> / mês</sub>
+          </div>
+          <div id="prime-discount" style="font-size:10px;letter-spacing:.1em;color:var(--gold-deep);font-weight:600;margin-top:8px">5% de desconto aplicado</div>
+          <p style="font-size:12px;color:var(--on-light-mut);margin-top:12px;line-height:1.7;font-weight:300">Curadoria mensal SVM — cortes premium com origem rastreada entregues na sua porta.</p>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features" style="padding:24px 32px 16px">
-          <li>Cortes nobres selecionados mensalmente</li>
-          <li>Blend de temperos exclusivo</li>
-          <li>Caixa temática com carta do curador</li>
-          <li>Entrega refrigerada inclusa</li>
-          <li>QR Code de rastreabilidade de origem</li>
+        <div style="height:1px;background:var(--cream-2);margin:0 32px"></div>
+        <ul style="padding:24px 32px 16px;list-style:none;display:flex;flex-direction:column;gap:11px">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Cortes nobres selecionados mensalmente</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Blend de temperos exclusivo</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Caixa temática com carta do curador</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Entrega refrigerada inclusa</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>QR Code de rastreabilidade de origem</li>
         </ul>
-        <div class="plan-parcel-box" style="margin:0 32px 8px">
+        <div style="margin:0 32px 16px;padding:14px 16px;background:rgba(138,98,48,.05);border:1px solid rgba(138,98,48,.15);border-radius:4px">
           <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:6px">💳 Parcelamento</div>
-          <div id="prime-parcel">em até 18x de <b>R$ 155,80</b> com juros</div>
-          <div id="prime-total" style="font-size:11px;color:var(--on-light-mut);margin-top:4px">Total: R$ 2.804,40</div>
+          <div id="prime-parcel" style="font-size:12.5px;color:rgba(27,22,16,.65);font-weight:300">em até 18x de <b style="color:var(--on-light);font-weight:600">R$ 155,80</b> com juros</div>
+          <div id="prime-total" style="font-size:11px;color:rgba(27,22,16,.45);margin-top:4px">Total: R$ 2.804,40</div>
         </div>
-        <div style="padding:16px 32px 32px">
-          <a href="#cta" style="display:block;padding:15px;text-align:center;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--gold)">Assinar Prime</a>
-          <p style="text-align:center;font-size:9px;color:var(--on-light-mut);margin-top:8px">Sem renovação automática</p>
+        <div style="padding:0 32px 32px">
+          <a href="#cta" style="display:block;padding:15px;text-align:center;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--gold);transition:.2s">Assinar Prime</a>
+          <p style="text-align:center;font-size:9px;color:var(--on-light-mut);margin-top:8px;letter-spacing:.5px">Sem renovação automática</p>
         </div>
       </div>
 
       <!-- SUPREMO -->
-      <div class="plan feat" data-reveal="" data-reveal-delay="1">
-        <div class="plan-badge">Mais escolhido</div>
-        <div class="plan-head" style="padding:36px 32px 24px">
-          <div class="pn">Supremo</div>
-          <div class="plan-period-selector" id="sel-supremo">
+      <div class="plan" style="background:var(--white);border:1px solid var(--gold-mid);border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(184,135,78,.12)">
+        <div style="background:linear-gradient(90deg,var(--gold-deep),var(--gold-mid),var(--gold-deep));padding:9px;text-align:center;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);font-weight:700">Mais escolhido</div>
+        <div style="padding:36px 32px 20px">
+          <div class="pn" style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:20px;font-weight:600">Supremo</div>
+          <div class="plan-period-selector" id="sel-supremo" style="display:flex;gap:6px;margin-bottom:20px">
             <button class="period-btn active" onclick="setPeriod('supremo',3,this)">3 meses</button>
             <button class="period-btn" onclick="setPeriod('supremo',6,this)">6 meses</button>
             <button class="period-btn" onclick="setPeriod('supremo',12,this)">12 meses</button>
           </div>
-          <div class="price"><sup>R$</sup><span id="supremo-price">1.884</span><span id="supremo-cents">,80</span><sub> / mês</sub></div>
-          <div id="supremo-discount" class="plan-discount">5% de desconto aplicado</div>
-          <p class="pd" style="margin-top:12px">O topo da curadoria SVM — volume, exclusividade e acesso a edições limitadas e eventos da casa.</p>
+          <div class="price" style="font-family:var(--serif);line-height:1">
+            <sup style="font-size:20px;vertical-align:super;color:var(--gold-mid)">R$</sup><span id="supremo-price" style="font-size:54px;font-weight:600;color:var(--on-light)">1.884</span><span id="supremo-cents" style="font-size:22px;color:var(--on-light)">,80</span><sub style="font-size:13px;color:var(--on-light-mut);font-family:var(--sans);font-weight:300"> / mês</sub>
+          </div>
+          <div id="supremo-discount" style="font-size:10px;letter-spacing:.1em;color:var(--gold-deep);font-weight:600;margin-top:8px">5% de desconto aplicado</div>
+          <p style="font-size:12px;color:var(--on-light-mut);margin-top:12px;line-height:1.7;font-weight:300">O topo da curadoria SVM — volume, exclusividade e acesso a edições limitadas e eventos da casa.</p>
         </div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features" style="padding:24px 32px 16px">
-          <li>Volume maior de cortes premium</li>
-          <li>3 blends de temperos exclusivos</li>
-          <li>Caixa temática especial + kit grill</li>
-          <li>Entrega prioritária inclusa</li>
-          <li>QR Code de rastreabilidade de origem</li>
-          <li>Acesso a edições limitadas</li>
-          <li>Convite para eventos SVM</li>
+        <div style="height:1px;background:var(--cream-2);margin:0 32px"></div>
+        <ul style="padding:24px 32px 16px;list-style:none;display:flex;flex-direction:column;gap:11px">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Volume maior de cortes premium</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>3 blends de temperos exclusivos</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Caixa temática especial + kit grill</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Entrega prioritária inclusa</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>QR Code de rastreabilidade de origem</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Acesso a edições limitadas</li>
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(27,22,16,.75);line-height:1.5;font-weight:300"><span style="color:var(--gold-mid);font-size:8px;margin-top:4px;flex-shrink:0">✦</span>Convite para eventos SVM</li>
         </ul>
-        <div class="plan-parcel-box" style="margin:0 32px 8px">
+        <div style="margin:0 32px 16px;padding:14px 16px;background:rgba(138,98,48,.05);border:1px solid rgba(138,98,48,.15);border-radius:4px">
           <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:6px">💳 Parcelamento</div>
-          <div id="supremo-parcel">em até 18x de <b>R$ 314,13</b> com juros</div>
-          <div id="supremo-total" style="font-size:11px;color:var(--on-light-mut);margin-top:4px">Total: R$ 5.654,40</div>
+          <div id="supremo-parcel" style="font-size:12.5px;color:rgba(27,22,16,.65);font-weight:300">em até 18x de <b style="color:var(--on-light);font-weight:600">R$ 314,13</b> com juros</div>
+          <div id="supremo-total" style="font-size:11px;color:rgba(27,22,16,.45);margin-top:4px">Total: R$ 5.654,40</div>
         </div>
-        <div style="padding:16px 32px 32px">
-          <a href="#cta" style="display:block;padding:15px;text-align:center;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 40%,var(--gold));color:var(--ink)">Assinar Supremo</a>
-          <p style="text-align:center;font-size:9px;color:var(--on-light-mut);margin-top:8px">Sem renovação automática</p>
+        <div style="padding:0 32px 32px">
+          <a href="#cta" style="display:block;padding:15px;text-align:center;border-radius:3px;font-family:var(--sans);font-weight:700;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;background:linear-gradient(135deg,var(--gold-deep),var(--gold-mid) 40%,var(--gold));color:var(--ink);transition:.2s">Assinar Supremo</a>
+          <p style="text-align:center;font-size:9px;color:var(--on-light-mut);margin-top:8px;letter-spacing:.5px">Sem renovação automática</p>
         </div>
       </div>
 
     </div>
-    <p style="text-align:center;font-size:11px;color:var(--on-light-mut);margin-top:24px;font-style:italic">* Descontos aplicados sobre o valor mensal base · Parcelamento sujeito a juros · Sem renovação automática</p>
+    <p style="text-align:center;font-size:11px;color:var(--on-light-mut);margin-top:24px;font-style:italic">* Descontos sobre o valor mensal base · Parcelamento sujeito a juros · Sem renovação automática</p>
   </div>
 </section>
 
@@ -1198,7 +1202,7 @@ image-slot::after { content:attr(placeholder);position:absolute;inset:0;display:
         <p>Clube e açougue de cortes nobres. Curadoria, maturação e entrega refrigerada — desde 1984.</p>
       </div>
       <div class="foot-col"><h5>Loja</h5><a href="#cortes">Cortes Angus</a><a href="#cortes">Edições Wagyu</a><a href="#cortes">Kits churrasco</a><a href="#planos">Vitrine completa</a></div>
-      <div class="foot-col"><h5>O Clube</h5><a href="#clube">Como funciona</a><a href="#planos">Prime · Supremo</a><a href="#garantia">Garantia</a><a href="#faq">Dúvidas</a></div>
+      <div class="foot-col"><h5>O Clube</h5><a href="#clube">Como funciona</a><a href="#planos">Nobre · Prime · Supremo</a><a href="#garantia">Garantia</a><a href="#faq">Dúvidas</a></div>
       <div class="foot-col"><h5>Contato</h5><a href="#">WhatsApp</a><a href="#">Instagram</a><a href="#">contato@svm.com.br</a><a href="#">Central de ajuda</a></div>
     </div>
     <div class="foot-bot">
@@ -1952,13 +1956,13 @@ function setPeriod(plan,m,btn){
   document.getElementById('sel-'+plan).querySelectorAll('.period-btn').forEach(function(b){b.classList.remove('active')});
   btn.classList.add('active');
   var base=bases[plan],disc=discs[m],monthly=base*(1-disc),total=monthly*m;
-  var taxa=0.0199,parcel=monthly*m*Math.pow(1+taxa,18)/18;
+  var taxa=0.0199,parcel=total*Math.pow(1+taxa,18)/18;
   var p=monthly.toFixed(2).split('.');
   document.getElementById(plan+'-price').textContent=parseInt(p[0]).toLocaleString('pt-BR');
   document.getElementById(plan+'-cents').textContent=','+p[1];
   document.getElementById(plan+'-discount').textContent=(disc*100).toFixed(0)+'% de desconto aplicado';
   document.getElementById(plan+'-total').textContent='Total: R$ '+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById(plan+'-parcel').innerHTML='em até 18x de <b>R$ '+parcel.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</b> com juros';
+  document.getElementById(plan+'-parcel').innerHTML='em até 18x de <b style="color:var(--on-light);font-weight:600">R$ '+parcel.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</b> com juros';
 }
 </script>
 </body>
