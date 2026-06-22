@@ -211,7 +211,7 @@ a{color:inherit;text-decoration:none}
 .section{padding-block:clamp(72px,9vw,128px)}
 .section.dark{background:var(--ink);color:var(--on-dark)}
 .section.cream{background:var(--cream);color:var(--on-light)}
-#planos{background:var(--cream);width:100%}
+#planos{display:block;width:100%;max-width:100%;grid-column:1/-1;background:var(--cream,#F4EFE6);color:var(--on-light)}
 .section.cream .eyebrow{color:var(--gold-deep)}
 .section.cream .display{color:var(--on-light)}
 .section-head{max-width:680px}
@@ -1967,6 +1967,7 @@ function setPeriod(plan,m,btn){
   document.getElementById(plan+'-total').textContent='Total: R$ '+total.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   document.getElementById(plan+'-parcel').innerHTML='em até 18x de <b style="color:var(--on-light);font-weight:600">R$ '+parcel.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</b> com juros';
 }
+function addToCart(){window.location.href='/loja';}
 </script>
 </body>
 </html>
